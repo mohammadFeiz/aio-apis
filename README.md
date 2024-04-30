@@ -148,8 +148,11 @@ if(addResult !== false){
 }
 
 
-//calling apis.Users_Add is same this code:
-/*
+
+```
+### calling apis.Users_Add is same this code:
+``` javascript
+
 async function Users_Add({image,name}){
     let baseUrl = 'https://my-dev.com/api/v1';
     let url = `${baseUrl}/Users/Add`;
@@ -179,6 +182,6 @@ async function Users_Add({image,name}){
     return false
 }
 
-*/
+Users_Add({image:'...',name:'...'})
 
 ```

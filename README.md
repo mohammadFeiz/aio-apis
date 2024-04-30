@@ -1,4 +1,6 @@
 # aio-apis
+
+### create apis class instance
 ``` javascript
 const MyLoader = () => {
     return '<div class="my-loading"></div>'

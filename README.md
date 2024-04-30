@@ -1,16 +1,7 @@
 # aio-apis
 ``` javascript
-const MyLoader:FC = ()=>{
-    return ....
-}
-type I_apis_props = {
-    id:string, //uniq id of app
-    baseUrl:string, //base of any url 
-    loader:()=>React.ReactNode,//custom loader
-    apis:I_ApisDictionary,//define apis properties
-    mock:I_mockInstance // define class mock by methods by same name in apis keys
-    onCatch:(err:any,apiConfig:any)=>string,
-    getError:(response:any,apiConfig:any)=>string | undefined
+const MyLoader = () => {
+    return '<div class="my-loading"></div>'
 }
 class Mock {
     Users_Get = (type) => {

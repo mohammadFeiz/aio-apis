@@ -132,16 +132,53 @@ let users = apis.Users_Get();
 //    {name:'name2',id:1},
 //    {name:'name3',id:2}
 //]
+//because of mockResult:true in difinition of Users_Get config
 ...
 function addUser(newUser){
     ...
 }
 let name = 'john doe';
 let image = 'www.google.com/1234213423';
-let addResult = apis.Users_Add({image,name})
+let parameter = {image,name}
+//this parameter is accessible in getBody function props of Users_Add
+let addResult = apis.Users_Add(parameter)
 if(addResult !== false){
     let id = addResult.id;
     addUser({name,image,id})
 }
+
+
+//calling apis.Users_Add is same this code:
+/*
+async function Users_Add({image,name}){
+    let baseUrl = 'https://my-dev.com/api/v1';
+    let url = `${baseUrl}/Users/Add`;
+    let body = {Image:image,Name:name}
+    $('.my-table-container').append(MyLoader)
+    let response = await Axios.post(url,body);
+    $('.my-table-container .loader').remove()
+    try{
+        if(!response.data.id){
+            alert('user add missing id!!!')
+        }
+        return {
+            id:response.data.id
+        }
+    }
+    catch(err){
+        if(err.response){
+            alert(err.response.message)
+        }
+        else if(err.message){
+            alert(err.message)
+        }
+        else {
+            alert('unknown error')
+        }
+    }
+    return false
+}
+
+*/
 
 ```

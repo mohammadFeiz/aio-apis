@@ -8,10 +8,7 @@ class Mock {
         return [
             {name:'name1',id:0},
             {name:'name2',id:1},
-            {name:'name3',id:2},
-            {name:'name4',id:3},
-            {name:'name5',id:4},
-            {name:'name6',id:5}
+            {name:'name3',id:2}
         ]
     }
 }
@@ -107,5 +104,26 @@ let props:I_apis_props = {
 let apis = new AIOApis(props)
 
 //use apis in your app
-let result = apis.Users_Add({image:'www.google.com/1234213423',name:'john doe'})
+
+let users = apis.Users_Get();
+///users is :
+//[
+//    {name:'name1',id:0},
+//    {name:'name2',id:1},
+//    {name:'name3',id:2}
+//]
+...
+function addUser(newUser){
+    ...
+}
+let name = 'john doe';
+let image = 'www.google.com/1234213423';
+let addResult = apis.Users_Add({image,name})
+if(addResult !== false){
+    let id = addResult.id;
+    addUser({name,image,id})
+}
+...
+
+
 ```

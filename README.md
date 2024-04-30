@@ -112,6 +112,9 @@ let props:I_apis_props = {
     },
     mock:new Mock()
 }
+//create instance of apis
 let apis = new AIOApis(props)
 
+//use apis in your app
+let result = apis.Users_Add({image:'www.google.com/1234213423',name:'john doe'})
 ```

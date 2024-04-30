@@ -185,3 +185,12 @@ async function Users_Add({image,name}){
 Users_Add({image:'...',name:'...'})
 
 ```
+### but why use aio-apis??
+- you can define all requests of your app in a class as function
+- you can mock requests by set instance of an mock class that has function same name of your request functions
+- you can set getError function one time for all requests to run before all request to define is there any error or is resquest success or not
+- you can set onCatch function one time for all requests to handle errors and prevent browser crash
+- you can show loading in all waitings just by set loading true
+- if is there any error error popup message will show automatically by auto generate message from description and returned result
+- set success popup messsage just by set one property
+- set token in header of all request one time

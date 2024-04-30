@@ -103,7 +103,16 @@ let props:I_apis_props = {
 //create instance of apis
 let apis = new AIOApis(props)
 
-//use apis in your app
+...
+
+
+```
+
+### use apis in your app
+
+``` javascript
+
+//use apis instance in your app
 
 let users = apis.Users_Get();
 ///users is :
@@ -123,7 +132,5 @@ if(addResult !== false){
     let id = addResult.id;
     addUser({name,image,id})
 }
-...
-
 
 ```

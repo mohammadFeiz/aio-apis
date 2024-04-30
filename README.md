@@ -1,5 +1,8 @@
 # aio-apis
-
+### install
+``` javascript
+npm i aio-apis
+```
 ### create apis class instance
 ``` javascript
 const MyLoader = () => {

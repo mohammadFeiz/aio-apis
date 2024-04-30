@@ -42,8 +42,11 @@ let props:I_apis_props = {
         if(response.data.isSuccess === false){
             return response.data.message
         }
+        else if(response.status === 401){
+            logout()
+        }
     },
-    //define apis in dectionary
+    //define apis in dictionary
     apis:{
         Users_Get:{
             //read User_Get from Mock class instance
@@ -58,8 +61,8 @@ let props:I_apis_props = {
             method:'post',
             //set api url by baseUrl
             getUrl:(baseUrl)=>`${baseUrl}/Users/Add`,
-            //this used just in method post. 
-            //you can send a parameter to this function for create body
+
+            //you can send a parameter to instance.Users_add function for create body
             getBody:(param)=>{
                 let {image,name} = param;
                 return {
@@ -69,9 +72,12 @@ let props:I_apis_props = {
             },
             //get result from request response
             //notice that returns string mean an error occured
-            //for return an string that is not err you should set it in an object
+            //for return an string that is not error, you should set it in object
             getResult:(response)=>{
-                if(!response.data.id){return 'user add missing id!!!'}
+                if(!response.data.id){
+                    //this message will show in error popup
+                    return 'user add missing id!!!'
+                }
                 return {
                     id:response.data.id
                 }

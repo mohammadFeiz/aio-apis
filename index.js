@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { AIODate, Storage } from 'aio-utils';
-import AIOPopup from './../../npm/aio-popup/index';
+import AIOPopup from 'aio-popup';
 import $ from 'jquery';
 import './index.css';
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }

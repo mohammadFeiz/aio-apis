@@ -99,3 +99,68 @@ If you would like to contribute to the development of AIOApis, please follow the
 
 License
 AIOApis is released under the MIT License.
+
+AIOApis Component Documentation
+Introduction
+The AIOApis component simplifies API handling within your application. It allows for easy configuration of API requests, error handling, and loading indicators.
+
+Installation
+Install AIOApis via npm:
+
+bash
+Copy code
+npm install aio-apis
+Usage
+Create an Instance:
+javascript
+Copy code
+import AIOApis from 'aio-apis';
+
+const apisInstance = new AIOApis({
+    // Configuration options...
+});
+Define API Functions:
+javascript
+Copy code
+const apiFunctions = {
+    Get_User: {
+        method: 'get',
+        description: 'Get users',
+        getUrl: (baseUrl) => `${baseUrl}/GetUsers`,
+        // More configuration...
+    },
+    Add_User: {
+        method: 'post',
+        description: 'Add user',
+        getUrl: (baseUrl) => `${baseUrl}/AddUser`,
+        // More configuration...
+    }
+};
+Use API Functions:
+javascript
+Copy code
+async function getUsers(type) {
+    let users = await apisInstance.Get_User(type);
+    return users;
+}
+
+async function addUser(userParam) {
+    let res = await apisInstance.Add_User(userParam);
+    return res;
+}
+Configuration Options
+id: Unique ID for the application.
+baseUrl: Base URL for API requests.
+loader: Function to render a loading indicator.
+onCatch: Function to handle errors caught during API requests.
+getError: Function to extract error messages from API responses.
+apis: Object containing definitions for individual API endpoints.
+Example
+javascript
+Copy code
+const apisInstance = new AIOApis({
+    id: 'my app',
+    baseUrl: 'http://mydev.com/api/v1',
+    // More configuration...
+});
+This simplified version provides a quick overview of the AIOApis component, how to use it, and its configuration options. Feel free to customize it further based on your specific needs and preferences.

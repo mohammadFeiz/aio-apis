@@ -164,3 +164,66 @@ const apisInstance = new AIOApis({
     // More configuration...
 });
 This simplified version provides a quick overview of the AIOApis component, how to use it, and its configuration options. Feel free to customize it further based on your specific needs and preferences.
+
+``` javascript
+const apisIntance = new AIOApis({
+    id:'my app',//uniq id of app for isolate storage cache key
+    getError:(response)=>{
+        if (response.data.isSuccess === false){
+            return response.data.message
+        }
+        if(response.data.status === 401){
+            logout()
+        }
+    },//this function will call after all requests and if request not catch this will extract error message or for example logout user by status 401
+    onCatch:(response)=>{
+        if(response.response){
+            return response.response.message
+        }
+    },//if apis went to catch thi function will call to extract error message to show user
+    loader:()=><MyLoader/>,//set custom loader 
+    baseUrl:'http://mydev.com/api/v1',//base url of requests
+    apis:apiFunctions
+})
+const apiFunctions = {
+    Get_User:{
+        method:'get',
+        description:'get users',
+        getUrl:(baseUrl)=>`${baseUrl}/GetUsers`,
+        cache:{
+            name:'all users',
+            time: 24 * 60 * 60 * 1000
+        }
+    },
+    Add_User:{
+        method:'post',
+        description:'adding user',
+        getUrl:(baseUrl)=>`${baseUrl}/AddUser`,
+        getBody:(functionParameter)=>{
+            let {name,age} = functionParameter;
+            return {
+                Name:name,
+                Age:age
+            }
+        },
+        getResult:(response)=>{
+            return response.data
+        },
+        errorResult:false,//if is there any error this value will return to method of instance that called
+        loading:true,//show loading 
+        message:{
+            success:true,
+            error:true
+        }
+    }
+}
+
+async function getUsers(type){
+    let users = await apisIntance.Get_Users(type)
+    return users;
+}
+async function addUser(userParam){
+    let res = await apisInstance.Add_User(userParam);
+    return res
+}
+```

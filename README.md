@@ -136,7 +136,73 @@ the methods of the mock class named the same as the request functions allows for
 
 - Reduced Boilerplate: Eliminating the need for manual mapping or configuration between request functions and mock methods reduces boilerplate code and simplifies the overall testing setup. Developers can focus on defining mock behavior without being burdened by unnecessary setup or maintenance tasks.
 
+``` javascript
+// Define the mock class
+class Mock {
+  Get_Users() {
+    return [
+      { id: 1, name: 'John Doe' },
+      { id: 2, name: 'Jane Smith' }
+    ];
+  }
 
+  Add_User(user) {
+    // Simulate adding a user and returning the updated user list
+    return [
+      ...this.Get_Users(), // Get the current user list
+      { id: Math.random(), ...user } // Add the new user
+    ];
+  }
+}
+
+// Configure the APIs with mockResult set to true and the mock class
+const apiFunctions = {
+  Get_Users: {
+    method: 'get',
+    description: 'Get users',
+    getUrl: (baseUrl) => `${baseUrl}/users`,
+    getResult: (response) => response.data,
+    mockResult: true // Enable mock result for this request
+  },
+  Add_User: {
+    method: 'post',
+    description: 'Add a user',
+    getUrl: (baseUrl) => `${baseUrl}/users`,
+    getBody: (user) => JSON.stringify(user),
+    getResult: (response) => response.data,
+    mockResult: true // Enable mock result for this request
+  }
+};
+
+// Create an instance of AIOApis with the mock class and configure APIs
+const apisInstance = new AIOApis({
+  id: 'myApp',
+  baseUrl: 'https://api.example.com',
+  apis: apiFunctions,
+  mockClass: new Mock() // Provide the mock class instance
+});
+
+// Example usage of the request functions
+const fetchUsers = async () => {
+  const users = await apisInstance.Get_Users();
+  console.log('Users:', users); // Will log mock user data
+};
+
+const addUser = async () => {
+  const updatedUsers = await apisInstance.Add_User({ name: 'Alice' });
+  console.log('Updated users:', updatedUsers); // Will log updated mock user data
+};
+
+// Invoke the request functions
+fetchUsers();
+addUser();
+```
+In this example:
+
+- We define a Mock class with methods named Get_Users and Add_User, corresponding to the request functions in the API configuration.
+- We configure the APIs with mockResult: true to enable mock results for these requests.
+- We create an instance of AIOApis and provide the Mock class instance using the mockClass option.
+- When the request functions are invoked, they automatically call the corresponding methods of the Mock class to retrieve mock data.
 
 
 

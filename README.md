@@ -121,3 +121,26 @@ The cache property within each API configuration allows for caching the response
 
 name: A unique identifier for the cache entry.
 time: The duration for which the response will be cached, specified in milliseconds.
+
+
+
+Absolutely! Having the methods of the mock class named the same as the request functions allows for automatic mapping and invocation based on the requested API endpoint. Here are some additional points highlighting the benefits of this approach:
+
+Automatic Invocation: With methods named identically to the request functions, developers don't need to manually invoke mock methods based on the requested API endpoint. AIOApis handles this mapping automatically, reducing the likelihood of errors and simplifying the testing process.
+
+Consistency: By maintaining consistent naming between the request functions and mock methods, developers can easily identify which mock method corresponds to which API endpoint. This consistency improves code readability and comprehension, making it easier for developers to understand and maintain the codebase.
+
+Simplified Testing: Automatic invocation of mock methods based on the requested API endpoint streamlines the testing process. Developers can focus on defining the behavior of mock methods without worrying about how they will be called during testing. This simplification accelerates the testing cycle and enables more comprehensive test coverage.
+
+Flexibility: The automatic mapping of mock methods based on request function names provides flexibility in defining mock behavior. Developers can easily create mock responses tailored to specific API endpoints, allowing them to simulate various scenarios and edge cases during testing without extra configuration or setup.
+
+Reduced Boilerplate: Eliminating the need for manual mapping or configuration between request functions and mock methods reduces boilerplate code and simplifies the overall testing setup. Developers can focus on defining mock behavior without being burdened by unnecessary setup or maintenance tasks.
+
+In summary, aligning the names of mock methods with request functions enables automatic invocation, maintains consistency, simplifies testing, provides flexibility, and reduces boilerplate code, resulting in a more efficient and effective testing process for developers.
+
+
+
+
+
+
+

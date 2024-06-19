@@ -32,7 +32,7 @@ export type AA_props = {
     lang: 'en' | 'fa';
 };
 export type AA_apiSetting = {
-    description?: string;
+    description?: string | ((p: any) => string);
     message?: AA_message;
     cache?: AA_cache;
     loading?: boolean;
@@ -60,7 +60,7 @@ export type AA_apis = {
 };
 export type AA_api = AA_apiSetting & {
     method?: AA_method;
-    getUrl?: (baseUrl: string) => string;
+    getUrl?: (baseUrl: string, parameter: any) => string;
     getBody?: (p: any) => any;
     getResult?: (response: any) => any;
 };

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AIODate, Storage } from 'aio-utils';
 import './index.css';
@@ -22,13 +23,10 @@ type AA_cache = {
 export type AA_props = {
     id: string;
     getAppState?: () => any;
-    baseUrl: string;
     token?: string;
     loader?: () => React.ReactNode;
     onCatch?: AA_onCatch;
     getError?: AA_getError;
-    apis: AA_apis;
-    mock?: any;
     lang: 'en' | 'fa';
 };
 export type AA_apiSetting = {
@@ -43,7 +41,6 @@ export type AA_apiSetting = {
     errorResult?: any;
     onError?: (result: string) => void;
     onSuccess?: (result: any) => void;
-    mockResult?: boolean;
 };
 type AA_getStorage = (name: string, def?: any) => any;
 type AA_setStorage = (key: string, value: any) => void;
@@ -55,31 +52,24 @@ type AA_messageParameter = {
     message: AA_message;
     description: string;
 };
-export type AA_apis = {
-    [key: string]: AA_api;
-};
 export type AA_api = AA_apiSetting & {
     method?: AA_method;
-    getUrl?: (baseUrl: string, parameter: any) => string;
-    getBody?: (p: any) => any;
+    url: string;
+    body?: any;
+    parameter?: any;
     getResult?: (response: any) => any;
 };
-export type AA_fn = {
-    [key: string]: (p?: any, setting?: AA_apiSetting) => any;
-};
 type AA_request_params = {
-    id: string;
     body?: any;
     method: AA_method;
     url: string;
     config?: AA_apiSetting;
     getResult: (response: any) => any;
-    mockResult: boolean;
     parameter?: any;
 };
 export default class AIOApis {
     storage: Storage;
-    fn: AA_fn;
+    request: (setting: AA_api) => any;
     getAppState: () => any;
     setStorage: AA_setStorage;
     getStorage: AA_getStorage;
@@ -88,7 +78,7 @@ export default class AIOApis {
     getLoading: (id: string) => string;
     handleLoading: AA_handleLoading;
     responseToResult: (p: AA_request_params) => Promise<any>;
-    request: (p: AA_request_params) => Promise<any>;
+    requestFn: (p: AA_request_params) => Promise<any>;
     addAlert: (p: {
         type: 'success' | 'error' | 'warning' | 'info';
         text: string;

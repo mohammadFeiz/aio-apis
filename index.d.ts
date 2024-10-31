@@ -1,5 +1,5 @@
 import React from 'react';
-import { AIODate, Storage } from './../../npm/aio-utils';
+import { AIODate, Storage } from 'aio-utils';
 import './index.css';
 type AA_method = 'post' | 'get' | 'delete' | 'put' | 'patch';
 type AA_success_fn = (p: {

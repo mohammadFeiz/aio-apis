@@ -1,5 +1,4 @@
 import React from 'react';
-import { AIODate, Storage } from 'aio-utils';
 import './index.css';
 type AA_method = 'post' | 'get' | 'delete' | 'put' | 'patch';
 type AA_success_fn = (p: {
@@ -92,10 +91,32 @@ export default class AIOApis {
     };
     showErrorMessage: (m: AA_messageParameter) => void;
     showSuccessMessage: (m: AA_messageParameter) => void;
-    dateToString: (date: any, pattern?: string) => string;
-    dateToNumber: (date: any) => any;
-    dateToArray: (date: any, jalali?: boolean) => number[];
-    DATE: AIODate;
     constructor(props: AA_props);
+}
+type I_storage_model = {
+    [key: string]: any;
+};
+type I_storage_time = {
+    [key: string]: number;
+};
+declare class Storage {
+    model: I_storage_model;
+    time: I_storage_time;
+    init: () => void;
+    saveStorage: (model: I_storage_model, time: I_storage_time) => void;
+    getParent: (field: string) => I_storage_model | undefined;
+    removeValueByField: (field: string) => I_storage_model;
+    setValueByField: (field: string, value: any) => I_storage_model;
+    getValueByField: (field: string) => any;
+    save: (field: string, value: any) => I_storage_model;
+    remove: (field: string, callback?: () => void) => I_storage_model;
+    load: (field: string, def?: any, time?: number) => any;
+    clear: () => void;
+    download: (file: any, name: string) => void;
+    export: () => void;
+    read: (file: any, callback: (model: any) => void) => void;
+    import: (file: any, callback: () => void) => void;
+    getModel: () => I_storage_model;
+    constructor(id: string);
 }
 export {};

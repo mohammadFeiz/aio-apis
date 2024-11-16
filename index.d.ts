@@ -112,10 +112,6 @@ declare class Storage {
     remove: (field: string, callback?: () => void) => I_storage_model;
     load: (field: string, def?: any, time?: number) => any;
     clear: () => void;
-    download: (file: any, name: string) => void;
-    export: () => void;
-    read: (file: any, callback: (model: any) => void) => void;
-    import: (file: any, callback: () => void) => void;
     getModel: () => I_storage_model;
     constructor(id: string);
 }

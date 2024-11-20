@@ -56,6 +56,7 @@ export type AA_api = AA_apiSetting & {
     body?: any;
     parameter?: any;
     getResult?: (response: any) => any;
+    headers?: any;
 };
 type AA_request_params = {
     body?: any;
@@ -64,6 +65,7 @@ type AA_request_params = {
     config?: AA_apiSetting;
     getResult: (response: any) => any;
     parameter?: any;
+    headers?: any;
 };
 export default class AIOApis {
     storage: Storage;

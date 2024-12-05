@@ -1,5 +1,5 @@
-import React from 'react';
-import './index.css';
+import AIOPopup from './../../npm/aio-popup';
+import AIOLoading from '../aio-loading';
 type AA_method = 'post' | 'get' | 'delete' | 'put' | 'patch';
 type AA_success_fn = (p: {
     result: any;
@@ -22,7 +22,7 @@ export type AA_props = {
     id: string;
     getAppState?: () => any;
     token?: string;
-    loader?: () => React.ReactNode;
+    loader?: string;
     onCatch?: AA_onCatch;
     getError?: AA_getError;
     lang: 'en' | 'fa';
@@ -40,11 +40,6 @@ export type AA_apiSetting = {
     onError?: (result: string) => void;
     onSuccess?: (result: any) => void;
 };
-type AA_getStorage = (name: string, def?: any) => any;
-type AA_setStorage = (key: string, value: any) => void;
-type AA_removeStorage = (key: string) => void;
-type AA_setToken = (token?: string) => void;
-type AA_handleLoading = (state: boolean, apiName: string, config: AA_apiSetting) => void;
 type AA_messageParameter = {
     result: any;
     message: AA_message;
@@ -67,25 +62,25 @@ type AA_request_params = {
     parameter?: any;
     headers?: any;
 };
+type AA_alertType = 'success' | 'error' | 'warning' | 'info';
 export default class AIOApis {
+    props: AA_props;
     storage: Storage;
-    request: (setting: AA_api) => any;
-    getAppState: () => any;
-    setStorage: AA_setStorage;
-    getStorage: AA_getStorage;
-    removeStorage: AA_removeStorage;
-    setToken: AA_setToken;
-    getLoading: (id: string) => string;
-    handleLoading: AA_handleLoading;
-    responseToResult: (p: AA_request_params) => Promise<any>;
-    requestFn: (p: AA_request_params) => Promise<any>;
+    aioLoading: AIOLoading;
+    popup: AIOPopup;
+    constructor(props: AA_props);
+    setToken: (token?: string) => void;
     addAlert: (p: {
-        type: 'success' | 'error' | 'warning' | 'info';
+        type: AA_alertType;
         text: string;
         subtext?: string;
         time?: number;
         alertType?: 'alert' | 'snackebar';
     }) => void;
+    renderPopup: () => any;
+    setStorage: (name: string, value: any) => I_storage_model;
+    getStorage: (name: string, def?: any) => any;
+    removeStorage: (name: string) => I_storage_model;
     handleCacheVersions: (cacheVersions: {
         [key: string]: number;
     }) => {
@@ -93,7 +88,9 @@ export default class AIOApis {
     };
     showErrorMessage: (m: AA_messageParameter) => void;
     showSuccessMessage: (m: AA_messageParameter) => void;
-    constructor(props: AA_props);
+    responseToResult: (p: AA_request_params) => Promise<any>;
+    requestFn: (p: AA_request_params) => Promise<any>;
+    request: (setting: AA_api) => Promise<any>;
 }
 type I_storage_model = {
     [key: string]: any;

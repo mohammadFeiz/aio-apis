@@ -1,66 +1,41 @@
-import AIOPopup from './../../npm/aio-popup';
-import AIOLoading from '../aio-loading';
+import AIOPopup from 'aio-popup';
+import AIOLoading from 'aio-loading';
 type AA_method = 'post' | 'get' | 'delete' | 'put' | 'patch';
-type AA_success_fn = (p: {
-    result: any;
-    appState: any;
-    parameter: any;
-}) => string | boolean;
-type AA_message = {
-    error?: boolean | string;
-    success?: AA_success_fn | string | boolean;
-    time?: number;
-    type?: 'alert' | 'snackebar';
-};
-type AA_onCatch = (err: any, config: AA_apiSetting) => string;
-type AA_getError = (response: any, confing: AA_apiSetting) => string | false;
+type AA_onCatch = (err: any, config: AA_api) => string;
+type AA_isSuccess = (response: any, confing: AA_api) => string | true;
 type AA_cache = {
     name: string;
     time: number;
 };
+type AA_successMessage = true | ((response: any, result: any) => string | undefined);
+type AA_errorMessage = false | ((response: any) => string | undefined);
 export type AA_props = {
     id: string;
-    getAppState?: () => any;
-    token?: string;
+    token: string;
     loader?: string;
-    onCatch?: AA_onCatch;
-    getError?: AA_getError;
+    onCatch: AA_onCatch;
+    isSuccess: AA_isSuccess;
     lang: 'en' | 'fa';
+    messageTime?: number;
+    messageType?: 'alert' | 'snackebar';
 };
-export type AA_apiSetting = {
-    description?: string | ((p: any) => string);
-    message?: AA_message;
+export type AA_api = {
+    description: string;
+    method: AA_method;
+    url: string;
+    getSuccessResult: (response: any) => any;
+    getErrorResult: (response: any) => any;
+    getSuccessMessage?: AA_successMessage;
+    getErrorMessage?: AA_errorMessage;
+    body?: any;
+    onCatch?: AA_onCatch;
+    isSuccess?: AA_isSuccess;
     cache?: AA_cache;
     loading?: boolean;
     loadingParent?: string;
-    token?: string;
-    onCatch?: AA_onCatch;
-    getError?: AA_getError;
-    errorResult?: any;
-    onError?: (result: string) => void;
-    onSuccess?: (result: any) => void;
-};
-type AA_messageParameter = {
-    result: any;
-    message: AA_message;
-    description: string;
-};
-export type AA_api = AA_apiSetting & {
-    method?: AA_method;
-    url: string;
-    body?: any;
-    parameter?: any;
-    getResult?: (response: any) => any;
     headers?: any;
-};
-type AA_request_params = {
-    body?: any;
-    method: AA_method;
-    url: string;
-    config?: AA_apiSetting;
-    getResult: (response: any) => any;
-    parameter?: any;
-    headers?: any;
+    messageTime?: number;
+    messageType?: 'alert' | 'snackebar';
 };
 type AA_alertType = 'success' | 'error' | 'warning' | 'info';
 export default class AIOApis {
@@ -75,7 +50,7 @@ export default class AIOApis {
         text: string;
         subtext?: string;
         time?: number;
-        alertType?: 'alert' | 'snackebar';
+        messageType: 'alert' | 'snackebar';
     }) => void;
     renderPopup: () => any;
     setStorage: (name: string, value: any) => I_storage_model;
@@ -86,11 +61,14 @@ export default class AIOApis {
     }) => {
         [key: string]: boolean;
     };
-    showErrorMessage: (m: AA_messageParameter) => void;
-    showSuccessMessage: (m: AA_messageParameter) => void;
-    responseToResult: (p: AA_request_params) => Promise<any>;
-    requestFn: (p: AA_request_params) => Promise<any>;
-    request: (setting: AA_api) => Promise<any>;
+    responseToResult: (api: AA_api) => Promise<{
+        success: boolean;
+        result: any;
+        response: any;
+    }>;
+    showErrorMessage: (response: any, message: string, api: AA_api) => void;
+    showSuccessMessage: (response: any, result: any, api: AA_api) => void;
+    request: (api: AA_api) => Promise<any>;
 }
 type I_storage_model = {
     [key: string]: any;

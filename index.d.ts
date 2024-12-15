@@ -14,7 +14,7 @@ export type AA_props = {
     token: string;
     loader?: string;
     onCatch: AA_onCatch;
-    isSuccess: AA_isSuccess;
+    isSuccess?: AA_isSuccess;
     lang: 'en' | 'fa';
     messageTime?: number;
     messageType?: 'alert' | 'snackebar';

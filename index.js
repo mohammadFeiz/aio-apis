@@ -1,1 +1,332 @@
-function _defineProperty(e,t,i){return(t=_toPropertyKey(t))in e?Object.defineProperty(e,t,{value:i,enumerable:!0,configurable:!0,writable:!0}):e[t]=i,e}function _toPropertyKey(e){var t=_toPrimitive(e,"string");return"symbol"==typeof t?t:t+""}function _toPrimitive(e,t){if("object"!=typeof e||!e)return e;var i=e[Symbol.toPrimitive];if(void 0!==i){var s=i.call(e,t||"default");if("object"!=typeof s)return s;throw TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}import e from"axios";import t from"aio-popup";import i from"aio-loading";export default class s{constructor(s){_defineProperty(this,"props",void 0),_defineProperty(this,"storage",void 0),_defineProperty(this,"aioLoading",void 0),_defineProperty(this,"popup",void 0),_defineProperty(this,"setToken",t=>{let i=t||this.props.token;i&&(e.defaults.headers.common.Authorization=`Bearer ${i}`)}),_defineProperty(this,"addAlert",e=>{let{type:t,text:i,subtext:s,time:r}=e,{messageType:o="alert"}=this.props;"alert"===o?this.popup.addAlert({type:t,text:i,subtext:s,time:r,className:"aio-apis-popup"}):this.popup.addSnackebar({type:t,text:i,subtext:s,time:r})}),_defineProperty(this,"renderPopup",()=>this.popup.render()),_defineProperty(this,"setStorage",(e,t)=>this.storage.save(e,t)),_defineProperty(this,"getStorage",(e,t)=>this.storage.load(e,t)),_defineProperty(this,"removeStorage",e=>this.storage.remove(e)),_defineProperty(this,"handleCacheVersions",e=>{let t={};for(let i in e)t[i]=0;let s=this.getStorage("storedCacheVersions",t),r={};for(let o in e)void 0!==s[o]&&(s[o]!==e[o]?(r[o]=!0,this.removeStorage(o)):r[o]=!1);return this.setStorage("storedCacheVersions",e),r}),_defineProperty(this,"responseToResult",async t=>{try{let i=await e({method:t.method,url:t.url,data:t.body,headers:t.headers}),s=t.isSuccess(i,t);if("string"==typeof s)return{success:!1,result:s,response:i};return{success:!0,result:t.getSuccessResult(i),response:i}}catch(r){let o=t.onCatch(r,t);return o||(o=r.message),{success:!1,result:o,response:r}}}),_defineProperty(this,"showErrorMessage",(e,t,i)=>{let{getErrorMessage:s=()=>t,messageTime:r=this.props.messageTime,messageType:o=this.props.messageType||"alert"}=i;if(!1===s)return;let a="fa"===this.props.lang?`${i.description} با خطا روبرو شد`:`An error was occured in ${i.description}`,n=s(e);this.addAlert({type:"error",text:a,subtext:n,time:r,messageType:o})}),_defineProperty(this,"showSuccessMessage",(e,t,i)=>{if(!i.getSuccessMessage)return;let{messageTime:s=this.props.messageTime,messageType:r=this.props.messageType||"alert"}=i,o="fa"===this.props.lang?`${i.description} با موفقیت انجام شد`:`${i.description} was successfull`,a=!0===i.getSuccessMessage?"":i.getSuccessMessage(e,t)||"";this.addAlert({type:"success",text:o,subtext:a,time:s,messageType:r})}),_defineProperty(this,"request",async e=>{let{onCatch:t=this.props.onCatch,isSuccess:i=this.props.isSuccess,loading:s=!0}=e;if(e.cache){let r=this.storage.load(e.cache.name,void 0,e.cache.time);if(void 0!==r)return r}let o="aa"+Math.round(1e5*Math.random());e.loading&&this.aioLoading.show(o,e.loadingParent);let{success:a,result:n,response:h}=await this.responseToResult({...e,onCatch:t,isSuccess:i});return a?(this.showSuccessMessage(h,n,e),e.cache&&this.storage.save(e.cache.name,n),s&&this.aioLoading.hide(o),n):(this.showErrorMessage(h,n,e),e.getErrorResult(h))}),this.props=s,this.aioLoading=new i(s.loader),this.storage=new Storage(s.id),this.popup=new t,this.setToken(s.token)}};class Storage{constructor(e){_defineProperty(this,"model",void 0),_defineProperty(this,"time",void 0),_defineProperty(this,"init",void 0),_defineProperty(this,"saveStorage",void 0),_defineProperty(this,"getParent",void 0),_defineProperty(this,"removeValueByField",void 0),_defineProperty(this,"setValueByField",void 0),_defineProperty(this,"getValueByField",void 0),_defineProperty(this,"save",void 0),_defineProperty(this,"remove",void 0),_defineProperty(this,"load",void 0),_defineProperty(this,"clear",void 0),_defineProperty(this,"getModel",void 0),this.model={},this.time={},this.init=()=>{let t=localStorage.getItem("storageClass"+e),i=localStorage.getItem("storageClassTime"+e),s,r;s=null==t?{}:JSON.parse(t),r=null==i?{}:JSON.parse(i),this.model=s,this.time=r,this.saveStorage(s,r)},this.saveStorage=(t,i)=>{localStorage.setItem("storageClass"+e,JSON.stringify(t)),localStorage.setItem("storageClassTime"+e,JSON.stringify(i))},this.getParent=e=>{let t=e.split("."),i=this.model;for(let s=0;s<t.length-1;s++)if("object"!=typeof(i=i[t[s]]))return;return i},this.removeValueByField=e=>{let t=e.split("."),i=this.getParent(e),s=t[t.length-1],r={};for(let o in i)o!==s&&(r[o]=i[o]);return t.pop(),this.setValueByField(t.join("."),r)},this.setValueByField=(e,t)=>{if(!e){this.model=t;return}var i=e.split("."),s=this.model;for(let r=0;r<i.length-1;r++){let o=i[r];void 0===s[o]&&(s[o]={}),s=s[o]}return s[i[i.length-1]]=t,this.getValueByField(i[0])},this.getValueByField=e=>{let t=e.split("."),i={...this.model};for(let s=0;s<t.length-1;s++)if("object"!=typeof(i=i[t[s]]))return;return i[t[t.length-1]]},this.save=(e,t)=>{try{t=JSON.parse(JSON.stringify(t))}catch{}if(!e||null===e)return{};let i=this.setValueByField(e,t);return this.time[e]=new Date().getTime(),this.saveStorage(this.model,this.time),i},this.remove=(e,t=()=>{})=>{let i=this.removeValueByField(e),s={};for(let r in this.time)r!==e&&(s[r]=this.time[r]);return this.time=s,this.saveStorage(this.model,this.time),t(),i},this.load=(e,t,i)=>{let s=this.getValueByField(e);if(i&&void 0!==s){let r=new Date().getTime(),o=this.time[e]||r;Math.abs(r-o)>i&&(s=void 0)}return void 0===s&&void 0!==t&&(s="function"==typeof t?t():t,this.save(e,t)),s},this.clear=()=>{this.model={},this.time={},this.saveStorage(this.model,this.time)},this.getModel=()=>JSON.parse(JSON.stringify(this.model)),this.init()}}
+import Axios from 'axios';
+import AIOPopup from 'aio-popup';
+import AIOLoading from 'aio-loading';
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+export default class AIOApis {
+  constructor(props) {
+    _defineProperty(this, "props", void 0);
+    _defineProperty(this, "storage", void 0);
+    _defineProperty(this, "aioLoading", void 0);
+    _defineProperty(this, "popup", void 0);
+    _defineProperty(this, "setToken", token => {
+      let res = token || this.props.token;
+      if (res) {
+        Axios.defaults.headers.common['Authorization'] = `Bearer ${res}`;
+      }
+    });
+    _defineProperty(this, "addAlert", p => {
+      let {
+        type,
+        text,
+        subtext,
+        time
+      } = p;
+      const {
+        messageType = 'alert'
+      } = this.props;
+      if (messageType === 'alert') {
+        this.popup.addAlert({
+          type,
+          text,
+          subtext,
+          time,
+          className: 'aio-apis-popup',
+          closeText: this.props.lang === 'fa' ? 'بستن' : 'Close'
+        });
+      } else {
+        this.popup.addSnackebar({
+          type,
+          text,
+          subtext,
+          time
+        });
+      }
+    });
+    _defineProperty(this, "renderPopup", () => this.popup.render());
+    _defineProperty(this, "setStorage", (name, value) => this.storage.save(name, value));
+    _defineProperty(this, "getStorage", (name, def) => this.storage.load(name, def));
+    _defineProperty(this, "removeStorage", name => this.storage.remove(name));
+    _defineProperty(this, "handleCacheVersions", cacheVersions => {
+      let def = {};
+      for (let prop in cacheVersions) {
+        def[prop] = 0;
+      }
+      let storedCacheVersions = this.getStorage('storedCacheVersions', def);
+      let diffrences = {};
+      for (let prop in cacheVersions) {
+        if (storedCacheVersions[prop] === undefined) {
+          continue;
+        }
+        if (storedCacheVersions[prop] !== cacheVersions[prop]) {
+          diffrences[prop] = true;
+          this.removeStorage(prop);
+        } else {
+          diffrences[prop] = false;
+        }
+      }
+      this.setStorage('storedCacheVersions', cacheVersions);
+      return diffrences;
+    });
+    _defineProperty(this, "responseToResult", async api => {
+      try {
+        let response = await Axios({
+          method: api.method,
+          url: api.url,
+          data: api.body,
+          headers: api.headers
+        });
+        let success = api.isSuccess(response, api);
+        if (typeof success === 'string') {
+          return {
+            success: false,
+            result: success,
+            response
+          };
+        }
+        return {
+          success: true,
+          result: api.getSuccessResult(response),
+          response
+        };
+      } catch (response) {
+        let message = api.onCatch(response, api);
+        if (!message) {
+          message = response.message;
+        }
+        return {
+          success: false,
+          result: message,
+          response
+        };
+      }
+    });
+    _defineProperty(this, "showErrorMessage", (response, message, api) => {
+      const {
+        getErrorMessage = () => message,
+        messageTime = this.props.messageTime,
+        messageType = this.props.messageType || 'alert'
+      } = api;
+      if (getErrorMessage === false) {
+        return;
+      }
+      let text = this.props.lang === 'fa' ? `${api.description} با خطا روبرو شد` : `An error was occured in ${api.description}`;
+      let subtext = getErrorMessage(response);
+      this.addAlert({
+        type: 'error',
+        text,
+        subtext,
+        time: messageTime,
+        messageType
+      });
+    });
+    _defineProperty(this, "showSuccessMessage", (response, result, api) => {
+      if (!api.getSuccessMessage) {
+        return;
+      }
+      const {
+        messageTime = this.props.messageTime,
+        messageType = this.props.messageType || 'alert'
+      } = api;
+      const text = this.props.lang === 'fa' ? `${api.description} با موفقیت انجام شد` : `${api.description} was successfull`;
+      let subtext = api.getSuccessMessage === true ? '' : api.getSuccessMessage(response, result) || '';
+      this.addAlert({
+        type: 'success',
+        text,
+        subtext: subtext,
+        time: messageTime,
+        messageType
+      });
+    });
+    _defineProperty(this, "request", async api => {
+      const {
+        onCatch = this.props.onCatch,
+        isSuccess = this.props.isSuccess || (() => true),
+        loading = true
+      } = api;
+      if (api.cache) {
+        let res = this.storage.load(api.cache.name, undefined, api.cache.time);
+        if (res !== undefined) {
+          return res;
+        }
+      }
+      const id = 'aa' + Math.round(Math.random() * 100000);
+      if (api.loading) {
+        this.aioLoading.show(id, api.loadingParent);
+      }
+      let {
+        success,
+        result,
+        response
+      } = await this.responseToResult({
+        ...api,
+        onCatch,
+        isSuccess
+      });
+      if (!success) {
+        this.showErrorMessage(response, result, api);
+        return api.getErrorResult(response);
+      }
+      this.showSuccessMessage(response, result, api);
+      if (api.cache) {
+        this.storage.save(api.cache.name, result);
+      }
+      if (loading) {
+        this.aioLoading.hide(id);
+      }
+      return result;
+    });
+    this.props = props;
+    this.aioLoading = new AIOLoading(props.loader);
+    this.storage = new Storage(props.id);
+    this.popup = new AIOPopup();
+    this.setToken(props.token);
+  }
+}
+class Storage {
+  constructor(id) {
+    _defineProperty(this, "model", void 0);
+    _defineProperty(this, "time", void 0);
+    _defineProperty(this, "init", void 0);
+    _defineProperty(this, "saveStorage", void 0);
+    _defineProperty(this, "getParent", void 0);
+    _defineProperty(this, "removeValueByField", void 0);
+    _defineProperty(this, "setValueByField", void 0);
+    _defineProperty(this, "getValueByField", void 0);
+    _defineProperty(this, "save", void 0);
+    _defineProperty(this, "remove", void 0);
+    _defineProperty(this, "load", void 0);
+    _defineProperty(this, "clear", void 0);
+    _defineProperty(this, "getModel", void 0);
+    this.model = {};
+    this.time = {};
+    this.init = () => {
+      let storage = localStorage.getItem('storageClass' + id);
+      let timeStorage = localStorage.getItem('storageClassTime' + id);
+      let model, time;
+      if (storage === undefined || storage === null) {
+        model = {};
+      } else {
+        model = JSON.parse(storage);
+      }
+      if (timeStorage === undefined || timeStorage === null) {
+        time = {};
+      } else {
+        time = JSON.parse(timeStorage);
+      }
+      this.model = model;
+      this.time = time;
+      this.saveStorage(model, time);
+    };
+    this.saveStorage = (model, time) => {
+      localStorage.setItem('storageClass' + id, JSON.stringify(model));
+      localStorage.setItem('storageClassTime' + id, JSON.stringify(time));
+    };
+    this.getParent = field => {
+      let fields = field.split('.');
+      let parent = this.model;
+      for (let i = 0; i < fields.length - 1; i++) {
+        parent = parent[fields[i]];
+        if (typeof parent !== 'object') {
+          return;
+        }
+      }
+      return parent;
+    };
+    this.removeValueByField = field => {
+      let fields = field.split('.');
+      let parent = this.getParent(field);
+      let lastField = fields[fields.length - 1];
+      let newParent = {};
+      for (let prop in parent) {
+        if (prop !== lastField) {
+          newParent[prop] = parent[prop];
+        }
+      }
+      fields.pop();
+      return this.setValueByField(fields.join('.'), newParent);
+    };
+    this.setValueByField = (field, value) => {
+      if (!field) {
+        this.model = value;
+        return;
+      }
+      var fields = field.split('.');
+      var parent = this.model;
+      for (let i = 0; i < fields.length - 1; i++) {
+        let f = fields[i];
+        if (parent[f] === undefined) {
+          parent[f] = {};
+        }
+        parent = parent[f];
+      }
+      parent[fields[fields.length - 1]] = value;
+      return this.getValueByField(fields[0]);
+    };
+    this.getValueByField = field => {
+      let fields = field.split('.');
+      let model = this.model;
+      let parent = {
+        ...model
+      };
+      for (let i = 0; i < fields.length - 1; i++) {
+        parent = parent[fields[i]];
+        if (typeof parent !== 'object') {
+          return;
+        }
+      }
+      return parent[fields[fields.length - 1]];
+    };
+    this.save = (field, value) => {
+      try {
+        value = JSON.parse(JSON.stringify(value));
+      } catch {
+        value = value;
+      }
+      if (!field || field === null) {
+        return {};
+      }
+      let res = this.setValueByField(field, value);
+      this.time[field] = new Date().getTime();
+      this.saveStorage(this.model, this.time);
+      return res;
+    };
+    this.remove = (field, callback = () => {}) => {
+      let res = this.removeValueByField(field);
+      let newTime = {};
+      for (let prop in this.time) {
+        if (prop !== field) {
+          newTime[prop] = this.time[prop];
+        }
+      }
+      this.time = newTime;
+      this.saveStorage(this.model, this.time);
+      callback();
+      return res;
+    };
+    this.load = (field, def, time) => {
+      let value = this.getValueByField(field);
+      if (time && value !== undefined) {
+        let thisTime = new Date().getTime();
+        let lastTime = this.time[field] || thisTime;
+        let dif = Math.abs(thisTime - lastTime);
+        if (dif > time) {
+          value = undefined;
+        }
+      }
+      if (value === undefined && def !== undefined) {
+        value = typeof def === 'function' ? def() : def;
+        this.save(field, def);
+      }
+      return value;
+    };
+    this.clear = () => {
+      this.model = {};
+      this.time = {};
+      this.saveStorage(this.model, this.time);
+    };
+    this.getModel = () => JSON.parse(JSON.stringify(this.model));
+    this.init();
+  }
+}

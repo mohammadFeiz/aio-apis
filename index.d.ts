@@ -1,41 +1,44 @@
 import AIOPopup from 'aio-popup';
 import AIOLoading from 'aio-loading';
 type AA_method = 'post' | 'get' | 'delete' | 'put' | 'patch';
-type AA_onCatch = (err: any, config: AA_api) => string;
+type I_getErrorMessage = (err: any, config: AA_api) => string;
 type AA_isSuccess = (response: any, confing: AA_api) => string | true;
 type AA_cache = {
     name: string;
     time: number;
 };
-type AA_successMessage = true | ((response: any, result: any) => string | undefined);
-type AA_errorMessage = false | ((response: any) => string | undefined);
+type I_getSuccessMessage = true | ((response: any, result: any) => string | undefined);
+type I_messageType = 'alert' | 'snackebar' | 'console' | 'none';
 export type AA_props = {
     id: string;
     token: string;
     loader?: string;
-    onCatch: AA_onCatch;
+    getErrorMessage?: I_getErrorMessage;
+    getSuccessMessage?: I_getSuccessMessage;
     isSuccess?: AA_isSuccess;
+    getSuccessResult?: (response: any) => any;
+    getErrorResult?: (response: any) => any;
     lang: 'en' | 'fa';
     messageTime?: number;
-    messageType?: 'alert' | 'snackebar';
+    errorMessageType?: I_messageType;
 };
 export type AA_api = {
     description: string;
     method: AA_method;
     url: string;
-    getSuccessResult: (response: any) => any;
-    getErrorResult: (response: any) => any;
-    getSuccessMessage?: AA_successMessage;
-    getErrorMessage?: AA_errorMessage;
+    getSuccessResult?: (response: any) => any;
+    getErrorResult?: (response: any) => any;
+    getSuccessMessage?: I_getSuccessMessage;
+    errorMessageType?: I_messageType;
+    successMessageType?: I_messageType;
     body?: any;
-    onCatch?: AA_onCatch;
+    getErrorMessage?: I_getErrorMessage;
     isSuccess?: AA_isSuccess;
     cache?: AA_cache;
     loading?: boolean;
     loadingParent?: string;
     headers?: any;
     messageTime?: number;
-    messageType?: 'alert' | 'snackebar';
 };
 type AA_alertType = 'success' | 'error' | 'warning' | 'info';
 export default class AIOApis {
@@ -50,7 +53,7 @@ export default class AIOApis {
         text: string;
         subtext?: string;
         time?: number;
-        messageType: 'alert' | 'snackebar';
+        messageType: I_messageType;
     }) => void;
     renderPopup: () => any;
     setStorage: (name: string, value: any) => I_storage_model;
@@ -66,7 +69,7 @@ export default class AIOApis {
         result: any;
         response: any;
     }>;
-    showErrorMessage: (response: any, message: string, api: AA_api) => void;
+    showErrorMessage: (message: string, api: AA_api) => void;
     showSuccessMessage: (response: any, result: any, api: AA_api) => void;
     request: (api: AA_api) => Promise<any>;
 }

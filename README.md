@@ -327,7 +327,7 @@ await apis.removeCache('users');
 ```
 
 
-## 🚀 A Small React App Example with aio-apis and TypeScript
+# 🚀 A Small React App Example with aio-apis and TypeScript
 This example includes:
 - An API class in TypeScript to manage requests.
 - A React component with TypeScript that fetches and displays data.

@@ -64,6 +64,9 @@ const apis = new Apis();
 const res = await apis.<request method>()
 ...
 ```
+🔹 In this structure, all API requests are organized within a single class. <br>
+🔹 API configurations are set during the class initialization. <br>
+🔹 Each request method sends the request and processes the response.
 
 ## 📌 Usage
 
@@ -119,9 +122,6 @@ if(users){
 - In the `super()` constructor, global API settings such as token and handleErrorMessage are initialized.
 - The `getUsers()` method sends a GET request and returns the user data if the request is successful or false in fail.
 
-🔹 In this structure, all API requests are organized within a single class. <br>
-🔹 API configurations are set during the class initialization. <br>
-🔹 Each request method sends the request and processes the response.
 
 ## Notice !!!
 > **Since each request is a method, you can make the request configuration fully dynamic by passing parameters to the method. For example, you can dynamically set values based on the input parameters.**

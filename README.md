@@ -29,6 +29,15 @@ yarn add aio-apis
 
 ---
 
+## 🚀 Why is aio-apis Useful?
+
+- ✅ **Modular Structure** API requests are organized within a single class.
+- ✅ **Reusability** Centralized API requests can be used across the entire application.
+- ✅ **Performance Optimization** Caching and the retry mechanism improve network request efficiency.
+- ✅ **Simplicity & Readability** Inheriting from AIOApis keeps the code clean and structured.
+
+If you want to manage API requests in a typed and organized way, aio-apis is an excellent choice. 🚀
+
 ## 📌 Usage
 
 ### Creating a Class Inheriting from `aio-apis`
@@ -66,13 +75,18 @@ class APIS extends AIOApis {
 ```typescript
 const apis = new APIS();
 ```
-#### Use Api Methods:
+#### Use Class Methods (by created class instance):
 ```typescript
 const users = await apis.getUsers();
 if(users){
     //use result in app
 }
 ```
+
+### 🔍 Code Analysis
+- The `APIS` class inherits from AIOApis imported from 'aio-apis'.
+- In the super() constructor, global API settings such as token and handleErrorMessage are initialized.
+- The getUsers() method sends a GET request and returns the user data if the request is successful or false in fail.
 ## Breakdown of Constructor Properties
 
 Property | Type | Description
@@ -221,5 +235,37 @@ apis.addAlert({type:'success', text:'Operation completed successfully',title:'Su
 apis.addAlert({type:'info', text:'New information received',title:''});
 apis.addAlert({type:'warning', text:'Warning: Data may be outdated',title:''});
 apis.addAlert({type:'error', text:'Error connecting to server',title:''});
+```
+
+### 🛠 **Cache Management**
+#### `fetchCachedValue` method
+- Retrieves a cached value by api name and cache name, refreshing it if expired.
+
+```typescript
+(apiName:string,cacheName:string)=>void
+```
+
+```typescript
+await apis.fetchCachedValue('getUsers','users');
+```
+
+#### `getCachedValue` method
+- get specific cache value defined with `api name` and `cache name`.
+- this will returns cached response of request
+```typescript
+(apiName:string,cacheName:string)=>any
+```
+
+```typescript
+const response = await apis.getCachedValue('getUsers','users');
+```
+#### `removeCache` method
+- Removes a cached entry by `api name` and `cache name`.
+```typescript
+(apiName:string,cacheName:string)=>any
+```
+
+```typescript
+await apis.removeCache('users');
 ```
 

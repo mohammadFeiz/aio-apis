@@ -71,10 +71,10 @@ class APIS extends AIOApis {
     };
 }
 ```
+- ⚠ In this example, we defined a request method called getUsers, which can be called from anywhere in the application that has access to the Apis instance.
+- ⚠ We pass the API specifications to this.request. Therefore, to manage each API, we need to handle the object that we send to this.request properly.
+- ⚠ `this.request` always returns an object containing response, success, and errorMessage, so we can use it to build the API result and decide what to return if success is false.
 
-- In this example, we defined a request method called getUsers, which can be called from anywhere in the application that has access to the Apis instance.
-- We pass the API specifications to this.request. Therefore, to manage each API, we need to handle the object that we send to this.request properly.
-- `this.request` always returns an object containing response, success, and errorMessage, so we can use it to build the API result and decide what to return if success is false.
 #### Create an Instance:
 ```typescript
 const apis = new APIS();

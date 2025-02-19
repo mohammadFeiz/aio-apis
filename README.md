@@ -32,7 +32,8 @@ yarn add aio-apis
 ## 🚀 Why is aio-apis Useful?
 
 - ✅ **Cross Frontend Framework** Can use in React, Angular,Vue or any frontend frameworks.
-- ✅ **Modular Structure** Can write each API requests collections within one js class.
+- ✅ **Modular Structure** Each API request collection can be written inside a JavaScript class.
+  - "With this approach, maintenance and development are very easy. For example, you can write all authentication-related APIs in a single class within your application."
 - ✅ **Reusability** Centralized API requests can be used across the entire application.
 - ✅ **Performance Optimization** Caching and the retry mechanism improve network request efficiency.
 - ✅ **Simplicity & Readability** Inheriting from AIOApis keeps the code clean and structured.

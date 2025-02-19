@@ -43,6 +43,7 @@ If you want to manage API requests in a typed and organized way, aio-apis is an 
 ### Creating a Class Inheriting from `aio-apis`
 - In aio-apis, API requests are structured as typed **methods** within a **class** that inherits from `AIOApis`. This allows for centralized request management, ensuring each API request follows a structured approach.
 - To create an API management class, we define a class that **extends** `AIOApis`. Inside the constructor, we pass essential configuration properties to **super()**. These settings define how all requests in this class will behave.
+- The generic type allows us to define the expected response structure, ensuring type safety and better code completion.The generic type defines the method's return type, ensuring the response matches the expected structure.
 #### Example
 
 ```typescript
@@ -70,6 +71,9 @@ class APIS extends AIOApis {
     };
 }
 
+- In this example, we defined a request method called getUsers, which can be called from anywhere in the application that has access to the Apis instance.
+- We pass the API specifications to this.request. Therefore, to manage each API, we need to handle the object that we send to this.request properly.
+- `this.request` always returns an object containing response, success, and errorMessage, so we can use it to build the API result and decide what to return if success is false.
 ```
 #### Create an Instance:
 ```typescript

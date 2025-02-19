@@ -326,3 +326,120 @@ const response = await apis.getCachedValue('getUsers','users');
 await apis.removeCache('users');
 ```
 
+
+## 🚀 A Small React App Example with aio-apis and TypeScript
+This example includes:
+- An API class in TypeScript to manage requests.
+- A React component with TypeScript that fetches and displays data.
+- TypeScript for better type safety and error prevention.
+
+## 📌 Project Structure
+```javascript
+/my-react-app
+ ├── /src
+ │   ├── /api
+ │   │   ├── Apis.ts
+ │   ├── /components
+ │   │   ├── UserList.tsx
+ │   ├── App.tsx
+ │   ├── index.tsx
+ ├── tsconfig.json
+```
+
+## 🔹 1. API Class (Apis.ts)
+Define an API class extending AIOApis to manage all API requests.
+
+```typescript
+import AIOApis from 'aio-apis';
+
+class Apis extends AIOApis {
+  constructor() {
+    super({
+      getUsers: { url: '/users', method: 'GET' },
+    });
+  }
+
+  getUsers = async () => {
+    const { response, success, errorMessage } = await this.request({ apiName: 'getUsers' });
+    return success ? response : Promise.reject(errorMessage);
+  };
+}
+
+export default new Apis();
+```
+
+## 🔹 2. React Component (UserList.tsx)
+A component that fetches user data and displays it.
+
+```typescript
+import { useEffect, useState } from 'react';
+import Apis from '../api/Apis';
+
+const UserList = () => {
+  const [users, setUsers] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    Apis.getUsers()
+      .then(setUsers)
+      .catch(setError);
+  }, []);
+
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <div>
+      <h2>User List</h2>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default UserList;
+```
+
+## 🔹 3. Main App (App.tsx)
+The root component of the application.
+
+```typescript
+import UserList from './components/UserList';
+
+const App = () => {
+  return (
+    <div>
+      <h1>My AIO-APIs App</h1>
+      <UserList />
+    </div>
+  );
+};
+
+export default App;
+```
+
+## 🔹 4. Entry Point (index.tsx)
+Rendering the app.
+
+```typescript
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+
+## ✅ **How It Works**
+1. Apis.ts defines the getUsers API request.
+2. UserList.tsx calls Apis.getUsers() inside useEffect to fetch data.
+3. If successful, the user list is displayed; otherwise, an error message is shown.
+4. App.tsx renders UserList.
+
+This example demonstrates how aio-apis simplifies API management in React apps with TypeScript. 🚀

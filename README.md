@@ -1,6 +1,6 @@
-# AIO-APIs 🚀
+# aio-apis 🚀
 
-**AIO-APIs** is a lightweight and efficient micro-framework for managing API requests in JavaScript and TypeScript applications. It simplifies HTTP requests with built-in caching, error handling, loading indicators, and mock requests.
+**aio-apis** is a lightweight and efficient micro-framework for managing API requests in JavaScript and TypeScript applications. It simplifies HTTP requests with built-in caching, error handling, loading indicators, and mock requests.
 
 ---
 
@@ -31,9 +31,9 @@ yarn add aio-apis
 
 ## 📌 Usage
 
-### 1️⃣ **Setting up AIO-APIs**
+### 1️⃣ **Setting up aio-apis**
 
-Create a class that extends \`AIOApis\` and configure the API settings.
+Create a class that extends \`aio-apis\` and configure the API settings.
 
 ```typescript
 import AIOApis from 'aio-apis';
@@ -50,7 +50,7 @@ class APIS extends AIOApis {
     }
 
     getUsers = async () => {
-        const { response, success } = await this.request<{ data: I_user[] }>({
+        const { response, success,errorMessage } = await this.request<{ data: I_user[] }>({
             name: 'getUsers',
             description: 'Retrieve user list',
             method: 'get',
@@ -95,12 +95,24 @@ type AA_api = {
 ### 🗃 **1. Caching System**
 Enable caching to avoid redundant API calls.
 
+- Structure
 ```typescript
-await apis.request({
-    name: 'getUsers',
-    url: '/api/users',
-    method: 'get',
-    cache: { name: 'users', expiredIn: Date.now() + 60000 }
+cache?: { name: string, expiredIn?: number }
+```
+- Explaination:
+    - `name` : A unique identifier for caching the request response. This allows different caches for the same request by using different names.
+    - `expiredIn` :  (Optional) The expiration timestamp in milliseconds. If set, the cache remains valid until the given timestamp.
+
+- Usage Example:
+
+```typescript
+const {response,success,errorMessage} = await apis.request({
+    ...
+    cache: {
+        name: 'users',
+        expiredIn: Date.now() + (24 * 60 * 60 * 1000)
+    }
+    ...
 });
 ```
 ---
@@ -125,34 +137,40 @@ handleErrorMessage: (response) => response.response.data.message
 
 ### 💬 **4. Message Display**
 Show different types of messages:
-
+- Display different types of messages using addAlert. This can be called from anywhere that has access to the instantiated API object:
 ```typescript
-apis.showMessage('success', 'Operation completed successfully');
-apis.showMessage('info', 'New information received');
-apis.showMessage('warning', 'Warning: Data may be outdated');
-apis.showMessage('error', 'Error connecting to server');
+apis.addAlert({type:'success', text:'Operation completed successfully',title:'Success'});
+apis.addAlert({type:'info', text:'New information received',title:''});
+apis.addAlert({type:'warning', text:'Warning: Data may be outdated',title:''});
+apis.addAlert({type:'error', text:'Error connecting to server',title:''});
 ```
 
 ---
 
 ### 🔄 **5. Retry Mechanism**
 Automatically retry failed requests:
+- The retries option allows automatic reattempts when a request fails. Each value in the retries array represents the delay in milliseconds before the next retry attempt.
 
 ```typescript
-retries: [3000, 4000, 5000]
+retries: number[]
+```
+
+```typescript
+const {response,success,errorMessage} = await this.request({
+    ...
+    retries: [3000, 4000, 5000]
+    ...
+});
 ```
 
 ---
 
 ### ⏳ **6. Auto Loading Management**
-Enable automatic loading indicators:
+Enable automatic loading indicators ( **default is true** ) :
 
 ```typescript
-await apis.request({
-    name: 'fetchData',
-    url: '/api/data',
-    method: 'get',
-    showLoading: true
+await this.request({
+    loading: true
 });
 ```
 

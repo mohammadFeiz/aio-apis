@@ -64,6 +64,9 @@ const apis = new Apis();
 const res = await apis.<request method>()
 ...
 ```
+🔹 In this structure, all API requests are organized within a single class. <br>
+🔹 API configurations are set during the class initialization. <br>
+🔹 Each request method sends the request and processes the response.
 
 ## 📌 Usage
 

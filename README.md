@@ -443,3 +443,109 @@ root.render(
 4. App.tsx renders UserList.
 
 This example demonstrates how aio-apis simplifies API management in React apps with TypeScript. 🚀
+
+### Updated Example with addUser and Cache Handling
+This example enhances the previous implementation by:
+✅ Adding a new API method (addUser) for adding a user. <br>
+✅ Caching getUsers response and refreshing it when a new user is added. <br>
+
+## 📌 Updated Apis.ts (API Class with Caching)
+
+```typescript
+import AIOApis from 'aio-apis';
+
+class Apis extends AIOApis {
+  constructor() {
+    super({
+      getUsers: { url: '/users', method: 'GET', cache: 'usersCache' },
+      addUser: { url: '/users', method: 'POST' },
+    });
+  }
+
+  getUsers = async () => {
+    const { response, success, errorMessage } = await this.request({ apiName: 'getUsers' });
+    return success ? response : Promise.reject(errorMessage);
+  };
+
+  addUser = async (userData: { name: string; email: string }) => {
+    const { success, errorMessage } = await this.request({ apiName: 'addUser', body: userData });
+    if (success) {
+      await this.fetchCachedValue('getUsers', 'usersCache'); // Refresh cache
+    }
+    return success ? true : Promise.reject(errorMessage);
+  };
+}
+
+export default new Apis();
+```
+## 📌 Updated UserList.tsx
+This component now includes a form for adding users and refreshes the user list when a user is added.
+
+```typescript
+import { useEffect, useState } from 'react';
+import Apis from '../api/Apis';
+
+const UserList = () => {
+  const [users, setUsers] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [newUser, setNewUser] = useState({ name: '', email: '' });
+
+  const fetchUsers = () => {
+    Apis.getUsers()
+      .then(setUsers)
+      .catch(setError);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleAddUser = async () => {
+    try {
+      await Apis.addUser(newUser);
+      fetchUsers(); // Fetch updated users after adding
+      setNewUser({ name: '', email: '' }); // Clear form
+    } catch (err) {
+      setError(err as string);
+    }
+  };
+
+  return (
+    <div>
+      <h2>User List</h2>
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name} ({user.email})</li>
+        ))}
+      </ul>
+      <h3>Add User</h3>
+      <input 
+        type="text" 
+        placeholder="Name" 
+        value={newUser.name} 
+        onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} 
+      />
+      <input 
+        type="email" 
+        placeholder="Email" 
+        value={newUser.email} 
+        onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} 
+      />
+      <button onClick={handleAddUser}>Add User</button>
+    </div>
+  );
+};
+
+export default UserList;
+```
+
+## ✅ **How It Works**
+
+1. getUsers API retrieves and caches the user list.
+2. addUser API sends user data and, if successful, refreshes the getUsers cache.
+3. The UI updates the user list automatically after adding a new user.
+
+This ensures **better performance** by using caching while keeping the UI up-to-date. 🚀
+
+

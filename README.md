@@ -252,6 +252,9 @@ apis.addAlert({type:'error', text:'Error connecting to server',title:''});
 ```typescript
 await apis.fetchCachedValue('getUsers','users');
 ```
+> in this example we update cached response of getUsers api by 'users' cache name.
+> This means there is an API method named `'getUsers'` as api name that has a cache entry named `'users'` as cache name, and we are manually refreshing this cached response.
+
 
 #### `getCachedValue` method
 - get specific cache value defined with `api name` and `cache name`.

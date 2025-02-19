@@ -85,8 +85,8 @@ if(users){
 
 ### 🔍 Code Analysis
 - The `APIS` class inherits from AIOApis imported from 'aio-apis'.
-- In the super() constructor, global API settings such as token and handleErrorMessage are initialized.
-- The getUsers() method sends a GET request and returns the user data if the request is successful or false in fail.
+- In the `super()` constructor, global API settings such as token and handleErrorMessage are initialized.
+- The `getUsers()` method sends a GET request and returns the user data if the request is successful or false in fail.
 ## Breakdown of Constructor Properties
 
 Property | Type | Description

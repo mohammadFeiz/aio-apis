@@ -40,6 +40,31 @@ yarn add aio-apis
 
 If you want to manage API requests in a typed and organized way, aio-apis is an excellent choice. 🚀
 
+
+## Structure:
+```typescript
+import AIOApis from 'aio-apis';
+
+class APIS extends AIOApis {
+  constructor() {
+    super(
+      <requests set config> // Define API request configurations here
+    );
+  }
+
+  <request method> = async () => {
+    const { response, success, errorMessage } = await this.request(<api config>);
+    return success ? response : errorMessage; // Handle API response
+  };
+  ...
+}
+...
+const apis = new Apis();
+...
+const res = await apis.<request method>()
+...
+```
+
 ## 📌 Usage
 
 ### Creating a Class Inheriting from `aio-apis`

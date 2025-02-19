@@ -64,9 +64,6 @@ const apis = new Apis();
 const res = await apis.<request method>()
 ...
 ```
-🔹 In this structure, all API requests are organized within a single class. <br>
-🔹 API configurations are set during the class initialization. <br>
-🔹 Each request method sends the request and processes the response.
 
 ## 📌 Usage
 
@@ -121,6 +118,29 @@ if(users){
 - The `APIS` class inherits from AIOApis imported from 'aio-apis'.
 - In the `super()` constructor, global API settings such as token and handleErrorMessage are initialized.
 - The `getUsers()` method sends a GET request and returns the user data if the request is successful or false in fail.
+
+🔹 In this structure, all API requests are organized within a single class. <br>
+🔹 API configurations are set during the class initialization. <br>
+🔹 Each request method sends the request and processes the response.
+
+## Notice !!!
+> **Since each request is a method, you can make the request configuration fully dynamic by passing parameters to the method. For example, you can dynamically set values based on the input parameters.**
+
+for example in this example you can pass description of request as parameter and make it dynamic in diffrent places in your app:
+```typescript
+    ...
+    getUsers = async (description:string) => {
+        const { response, success,errorMessage } = await this.request<{ data: I_user[] }>({
+            name: 'getUsers',
+            description,
+            method: 'get',
+            url: '/api/users'
+        });
+        return success ? response.data : false;
+    };
+    ...
+```
+
 ## Breakdown of Constructor Properties
 
 Property | Type | Description

@@ -179,7 +179,7 @@ type api_type = {
     body?: any;
     cache?: { name: string; expiredIn?: number };
     mock?: { delay: number; methodName: string };
-    headers?: any; //set custom headers for request
+    headers?: any;
     token?: string; 
     showError?: boolean;
     loading?: boolean;
@@ -193,7 +193,7 @@ method   | 'get' or 'post' or 'delete' or 'patch' or 'put' | Required | Define r
 url | string | Required | Request URL
 body | any | required if method is post | request body
 cache | { name: string; expiredIn?: number } | Optional | save result in cache to prevent repeat request
-mock | (requestConfig)=>{status:number,data:any} | Optional | mock response
+mock | (requestConfig)=>{status:number,data:any} | Optional | Simulated API response for testing. Can be a function that returns a fake response.
 mockDelay | number | 3000 | simulate request delay in mock mode
 headers | any | Optional | set custom headers for request
 token | string | Required | Authorization token 

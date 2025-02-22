@@ -31,7 +31,7 @@ yarn add aio-apis
 
 ## 🚀 Why is aio-apis Useful?
 
-- ✅ **Cross Frontend Framework** Can use in React, Angular,Vue or any frontend frameworks.
+- ✅ **Framework Agnostic** Compatible with React, Angular, Vue, and other frontend.
 - ✅ **Modular Structure** Each API request collection can be written inside a JavaScript class.
   - "With this approach, maintenance and development are very easy. For example, you can write all authentication-related APIs in a single class within your application."
 - ✅ **Reusability** Centralized API requests can be used across the entire application.
@@ -132,7 +132,7 @@ if(users){
 ## Notice !!!
 > **Since each request is a method, you can make the request configuration fully dynamic by passing parameters to the method. For example, you can dynamically set values based on the input parameters.**
 
-for example in this example you can pass description of request as parameter and make it dynamic in diffrent places in your app:
+For example, in this case, you can pass the request description as a parameter to make it dynamic in different parts of your app.
 ```typescript
     ...
     getUsers = async (description:string) => {
@@ -154,7 +154,7 @@ Property | Type | Description
 id | string | A unique identifier for the API instance. Helps in isolate caches.
 token | string | Authorization token used for authenticated requests.
 lang | 'en' or 'fa'. default is 'en' (Optional) | Language setting for requests, useful for localization.
-handleErrorMessage | (response) => string | A function that extracts and returns the error message from the server response.
+handleErrorMessage | (response) => string | Extracts the error message from the server response. This will call for all requests of class.
 
 ```typescript
 constructor() {

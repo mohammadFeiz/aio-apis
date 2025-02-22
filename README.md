@@ -173,17 +173,17 @@ Each request follows this structure:
 
 ```typescript
 type api_type = {
-    name: string; //required . unique name of api 
+    name: string;
     method: 'post' | 'get' | 'delete' | 'put' | 'patch';
     url: string;
-    body?: any; //required if method is post
-    cache?: { name: string; expiredIn?: number }; //cache result by defined name
-    mock?: { delay: number; methodName: string }; // mock response
+    body?: any;
+    cache?: { name: string; expiredIn?: number };
+    mock?: { delay: number; methodName: string };
     headers?: any; //set custom headers for request
     token?: string; 
-    showError?: boolean; //Optional. default is true. use for prevent show error message automatically
-    loading?: boolean; //Optional. default is true.
-    retries?: number[]; // Optional. milisecond times foer retry in fail
+    showError?: boolean;
+    loading?: boolean;
+    retries?: number[];
 };
 ```
 Property | type | default | Description

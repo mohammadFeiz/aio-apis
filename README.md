@@ -64,9 +64,15 @@ const apis = new Apis();
 const res = await apis.<request method>()
 ...
 ```
-🔹 In this structure, all API requests are organized within a single class. <br>
-🔹 API configurations are set during the class initialization. <br>
-🔹 Each request method sends the request and processes the response.
+### in this structure
+🔹 Define a collection of API requests by creating a JS class that extends AIOApis. <br>
+🔹 Set global request configurations in the class constructor using the super method. <br>
+🔹 Write each API request as a separate method inside the class. These methods can accept any parameters and return anything relevant to the project's logic. <br>
+🔹 Each request method must call this.request to handle api options and receive response, success, and errorMessage. After that, you can process the response in any way that suits your project. <br>
+🔹 this.request always returns an object containing success, response, and errorMessage. <br>
+🔹 Create an instance of the class and use it in the application. <br>
+🔹 To call an API, invoke the corresponding method of the class instance. <br>
+🔹 You can add any helper methods or pass any parameters when creating the class. The only requirement is that the class must extend AIOApis to access its core methods. 🚀
 
 ## 📌 Usage
 

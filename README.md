@@ -79,15 +79,15 @@ const res = await apis.<request method>()
 Property | Type | Description
 -------- | ---- | -----------
 id | string | A unique identifier for the API instance. Helps in isolate caches.
-token | string | Authorization token used for authenticated requests.
+token | string | Authorization token used for authenticated requests.you can pass token to class in creating instance.
 lang | 'en' or 'fa'. default is 'en' (Optional) | Language setting for requests, useful for localization.
 handleErrorMessage | (response) => string | Extracts the error message from the server response. This will call for all requests of class.
 
 ```typescript
-constructor() {
+constructor(token:string) {
     super({
         id: 'my-api',
-        token: 'your-token',
+        token,
         handleErrorMessage: (response) => response.response.data.message
     });
 }

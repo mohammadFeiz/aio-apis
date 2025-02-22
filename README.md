@@ -470,7 +470,7 @@ class Apis extends AIOApis {
 
   getUsers = async () => {
     const { response, success, errorMessage } = await this.request({ apiName: 'getUsers' });
-    return success ? response : Promise.reject(errorMessage);
+    return success ? response : false;
   };
 
   addUser = async (userData: { name: string; email: string }) => {
@@ -496,10 +496,11 @@ const UserList = () => {
   const [error, setError] = useState<string | null>(null);
   const [newUser, setNewUser] = useState({ name: '', email: '' });
 
-  const fetchUsers = () => {
-    Apis.getUsers()
-      .then(setUsers)
-      .catch(setError);
+  const fetchUsers = async () => {
+    const res = await Apis.getUsers()
+    if(res){
+      setUsers(res)
+    }
   };
 
   useEffect(() => {

@@ -74,6 +74,26 @@ const res = await apis.<request method>()
 🔹 To call an API, invoke the corresponding method of the class instance. <br>
 🔹 You can add any helper methods or pass any parameters when creating the class. The only requirement is that the class must extend AIOApis to access its core methods. 🚀
 
+## Breakdown of Constructor Properties
+
+Property | Type | Description
+-------- | ---- | -----------
+id | string | A unique identifier for the API instance. Helps in isolate caches.
+token | string | Authorization token used for authenticated requests.
+lang | 'en' or 'fa'. default is 'en' (Optional) | Language setting for requests, useful for localization.
+handleErrorMessage | (response) => string | Extracts the error message from the server response. This will call for all requests of class.
+
+```typescript
+constructor() {
+    super({
+        id: 'my-api',
+        token: 'your-token',
+        handleErrorMessage: (response) => response.response.data.message
+    });
+}
+```
+---
+
 ## 📌 Usage
 
 ### Creating a Class Inheriting from `aio-apis`
@@ -146,26 +166,6 @@ For example, in this case, you can pass the request description as a parameter t
     };
     ...
 ```
-
-## Breakdown of Constructor Properties
-
-Property | Type | Description
--------- | ---- | -----------
-id | string | A unique identifier for the API instance. Helps in isolate caches.
-token | string | Authorization token used for authenticated requests.
-lang | 'en' or 'fa'. default is 'en' (Optional) | Language setting for requests, useful for localization.
-handleErrorMessage | (response) => string | Extracts the error message from the server response. This will call for all requests of class.
-
-```typescript
-constructor() {
-    super({
-        id: 'my-api',
-        token: 'your-token',
-        handleErrorMessage: (response) => response.response.data.message
-    });
-}
-```
----
 
 ## 🔹 API Configuration
 
